@@ -1,0 +1,50 @@
+# Define the name of the GitHub Actions workflow
+name: Build & Deploy skul
+
+# Define when the workflow should be triggered
+on:
+  push:
+    branches:
+      - develop    # Trigger on pushes to the develop branch
+  pull_request:
+    branches:
+      - develop    # Trigger on pull requests targeting the develop branch
+
+# Define the jobs that will run as part of the workflow
+jobs:
+  # Define the 'build-deploy' job, responsible for building, testing, and deploying the application
+  build-deploy:
+    # Name the job for easy identification in the workflow visualization
+    name: Build, Test, and Deploy Skul
+
+    # Specify the type of runner to execute the job (in this case, a virtual machine with Ubuntu)
+    runs-on: ubuntu-latest
+
+    # Define the steps that make up the job
+    steps:
+      # Step 1: Checkout code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up JDK 17 for the build environment
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'corretto'
+
+      # Step 3: Build and package the Java application using Maven
+      - name: Build and Package
+        run: mvn -B clean package
+
+      # Step 4: Run tests to ensure code quality and functionality
+      - name: Run Tests
+        run: |
+          # Add commands to run tests here
+          echo "Running tests..."
+
+      # Step 5: Deploy the application to the target environment
+      - name: Deploy
+        run: |
+          # Add deployment commands here
+          echo "Deploying..."
